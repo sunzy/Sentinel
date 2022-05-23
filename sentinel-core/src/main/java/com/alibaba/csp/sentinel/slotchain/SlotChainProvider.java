@@ -44,6 +44,7 @@ public final class SlotChainProvider {
         slotChainBuilder = SpiLoader.loadFirstInstanceOrDefault(SlotChainBuilder.class, DefaultSlotChainBuilder.class);
 
         if (slotChainBuilder == null) {
+            //如果通过SPI的方式未能创建builder,则手工new一个DefaultSlotChainBuilder
             // Should not go through here.
             RecordLog.warn("[SlotChainProvider] Wrong state when resolving slot chain builder, using default");
             slotChainBuilder = new DefaultSlotChainBuilder();

@@ -69,9 +69,10 @@ public class FlowRuleChecker {
         }
 
         if (rule.isClusterMode()) {
+            //集群流控
             return passClusterCheck(rule, context, node, acquireCount, prioritized);
         }
-
+        //单机流控
         return passLocalCheck(rule, context, node, acquireCount, prioritized);
     }
 

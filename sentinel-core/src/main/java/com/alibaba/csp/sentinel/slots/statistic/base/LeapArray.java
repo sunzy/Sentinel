@@ -39,9 +39,11 @@ import com.alibaba.csp.sentinel.util.TimeUtil;
  * @author Carpenter Lee
  */
 public abstract class LeapArray<T> {
-
+    //样本时间窗口长度
     protected int windowLengthInMs;
+    //样本数
     protected int sampleCount;
+    //时间窗长度
     protected int intervalInMs;
 
     protected final AtomicReferenceArray<WindowWrap<T>> array;

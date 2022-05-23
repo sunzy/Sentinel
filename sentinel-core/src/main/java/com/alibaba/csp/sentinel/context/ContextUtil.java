@@ -118,8 +118,11 @@ public class ContextUtil {
     }
 
     protected static Context trueEnter(String name, String origin) {
+        //尝试再次从ThreadLocal中获取context
         Context context = contextHolder.get();
         if (context == null) {
+            //尝试从缓存中获取
+            //缓存key为context名称，value实为EntranceNode
             Map<String, DefaultNode> localCacheNameMap = contextNameNodeMap;
             DefaultNode node = localCacheNameMap.get(name);
             if (node == null) {
@@ -135,10 +138,13 @@ public class ContextUtil {
                                 setNullContext();
                                 return NULL_CONTEXT;
                             } else {
+                                //新建EntranceNode并添加到Root中
                                 node = new EntranceNode(new StringResourceWrapper(name, EntryType.IN), null);
                                 // Add entrance node.
                                 Constants.ROOT.addChild(node);
 
+                                //为什么要建一个新的map,而不是在原来的contextNameNodeMap上操作？
+                                //--为了防止"集合迭代稳定性"问题
                                 Map<String, DefaultNode> newMap = new HashMap<>(contextNameNodeMap.size() + 1);
                                 newMap.putAll(contextNameNodeMap);
                                 newMap.put(name, node);
